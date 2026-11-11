@@ -48,50 +48,32 @@
     {
       "key": "sec",
       "text": "Mélanger dans un saladier",
-      "inputs": [
-        "farine",
-        "sucre",
-        "sel"
-      ]
+      "inputs": ["farine", "sucre", "sel"]
     },
     {
       "key": "puits",
       "text": "Faire un puits, ajouter les oeufs",
-      "inputs": [
-        "sec",
-        "oeufs"
-      ]
+      "inputs": ["sec", "oeufs"]
     },
     {
       "key": "delayer",
       "text": "Délayer en versant le lait petit à petit",
-      "inputs": [
-        "puits",
-        "lait"
-      ]
+      "inputs": ["puits", "lait"]
     },
     {
       "key": "fondu",
       "text": "Faire fondre",
-      "inputs": [
-        "beurre"
-      ]
+      "inputs": ["beurre"]
     },
     {
       "key": "pate",
       "text": "Incorporer, laisser reposer 1 h",
-      "inputs": [
-        "delayer",
-        "fondu",
-        "rhum"
-      ]
+      "inputs": ["delayer", "fondu", "rhum"]
     },
     {
       "key": "cuire",
       "text": "Cuire à la poêle, 1 min par face",
-      "inputs": [
-        "pate"
-      ]
+      "inputs": ["pate"]
     }
   ]
 }

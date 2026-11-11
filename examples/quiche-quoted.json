@@ -49,43 +49,27 @@
     {
       "key": "foncer",
       "text": "Foncer le moule [Ø 28 cm]",
-      "inputs": [
-        "pate"
-      ]
+      "inputs": ["pate"]
     },
     {
       "key": "poeler",
       "text": "Faire revenir à sec",
-      "inputs": [
-        "lardons"
-      ]
+      "inputs": ["lardons"]
     },
     {
       "key": "appareil",
       "text": "Battre l'appareil",
-      "inputs": [
-        "oeufs",
-        "creme",
-        "lait",
-        "epices"
-      ]
+      "inputs": ["oeufs", "creme", "lait", "epices"]
     },
     {
       "key": "garnir",
       "text": "Garnir : lardons, appareil, gruyère \"à volonté\"",
-      "inputs": [
-        "foncer",
-        "poeler",
-        "appareil",
-        "gruyere"
-      ]
+      "inputs": ["foncer", "poeler", "appareil", "gruyere"]
     },
     {
       "key": "cuire",
       "text": "Cuire 35 min",
-      "inputs": [
-        "garnir"
-      ]
+      "inputs": ["garnir"]
     }
   ]
 }

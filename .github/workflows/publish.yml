@@ -1,0 +1,56 @@
+# Publishes the package to npmjs.org when a version tag (v1.2.3) is pushed.
+#
+# Authentication, in order of preference:
+#   1. npm Trusted Publishing (OIDC): configure this repository + "publish.yml"
+#      as trusted publisher on npmjs.com (package Settings). No secret needed.
+#   2. Fallback: an npm granular access token stored as the NPM_TOKEN secret
+#      (needed for the very first publish, before the package exists).
+name: Publish to npm
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+  id-token: write # OIDC for trusted publishing + provenance
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          cache: npm
+
+      # Trusted publishing needs npm >= 11.5.1.
+      - run: npm install -g npm@^11.5.1
+
+      - name: Check tag matches package.json version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          version="$(node -p "require('./package.json').version")"
+          if [ "$tag" != "$version" ]; then
+            echo "::error::Tag v$tag does not match package.json version $version"
+            exit 1
+          fi
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+      - name: Publish
+        run: npm publish --provenance --access public
+        env:
+          # Ignored when trusted publishing (OIDC) is configured; used otherwise.
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

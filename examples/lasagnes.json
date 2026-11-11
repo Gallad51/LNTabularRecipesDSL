@@ -1,8 +1,5 @@
 {
-  "prerequisites": [
-    "Préchauffer le four à 200 °C",
-    "Beurrer un plat à gratin"
-  ],
+  "prerequisites": ["Préchauffer le four à 200 °C", "Beurrer un plat à gratin"],
   "ingredients": [
     {
       "key": "oignon",
@@ -71,75 +68,47 @@
     {
       "key": "hacher",
       "text": "Hacher finement",
-      "inputs": [
-        "oignon",
-        "carotte"
-      ]
+      "inputs": ["oignon", "carotte"]
     },
     {
       "key": "revenir",
       "text": "Faire revenir 5 min",
-      "inputs": [
-        "hacher"
-      ]
+      "inputs": ["hacher"]
     },
     {
       "key": "dorer",
       "text": "Ajouter la viande, faire dorer",
-      "inputs": [
-        "revenir",
-        "boeuf"
-      ]
+      "inputs": ["revenir", "boeuf"]
     },
     {
       "key": "mijoter",
       "text": "Mijoter 30 min",
-      "inputs": [
-        "dorer",
-        "tomate",
-        "herbes"
-      ]
+      "inputs": ["dorer", "tomate", "herbes"]
     },
     {
       "key": "bolo",
       "text": "Réserver la bolognaise",
-      "inputs": [
-        "mijoter"
-      ]
+      "inputs": ["mijoter"]
     },
     {
       "key": "roux",
       "text": "Faire un roux",
-      "inputs": [
-        "beurre",
-        "farine"
-      ]
+      "inputs": ["beurre", "farine"]
     },
     {
       "key": "bechamel",
       "text": "Fouetter jusqu'à épaississement",
-      "inputs": [
-        "roux",
-        "lait",
-        "muscade"
-      ]
+      "inputs": ["roux", "lait", "muscade"]
     },
     {
       "key": "monter",
       "text": "Monter en couches : pâtes, bolognaise, béchamel ; finir par le fromage",
-      "inputs": [
-        "bolo",
-        "bechamel",
-        "pates",
-        "fromage"
-      ]
+      "inputs": ["bolo", "bechamel", "pates", "fromage"]
     },
     {
       "key": "cuire",
       "text": "Cuire 35 min",
-      "inputs": [
-        "monter"
-      ]
+      "inputs": ["monter"]
     }
   ]
 }

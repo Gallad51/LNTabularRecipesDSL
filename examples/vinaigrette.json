@@ -1,0 +1,44 @@
+{
+  "prerequisites": [],
+  "ingredients": [
+    {
+      "key": "moutarde",
+      "name": "Moutarde",
+      "quantity": 1,
+      "unit": "cc"
+    },
+    {
+      "key": "vinaigre",
+      "name": "Vinaigre de vin",
+      "quantity": 2,
+      "unit": "cs"
+    },
+    {
+      "key": "sel",
+      "name": "Sel"
+    },
+    {
+      "key": "poivre",
+      "name": "Poivre"
+    },
+    {
+      "key": "huile",
+      "name": "Huile d'olive",
+      "quantity": 6,
+      "unit": "cs"
+    }
+  ],
+  "steps": [
+    {
+      "key": "fouetter",
+      "text": "Fouetter jusqu'à émulsion",
+      "inputs": [
+        "moutarde",
+        "vinaigre",
+        "sel",
+        "poivre",
+        "huile"
+      ]
+    }
+  ]
+}

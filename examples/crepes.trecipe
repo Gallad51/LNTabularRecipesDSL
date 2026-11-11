@@ -1,0 +1,6 @@
+%% Crêpes — environ 15 crêpes
+farine[250 g Farine] & sucre[2 cs Sucre] & sel[1 pincee Sel] --> sec(Mélanger dans un saladier)
+sec & oeufs[4 pcs Oeufs] --> puits(Faire un puits, ajouter les oeufs)
+puits & lait[50 cl Lait] --> delayer(Délayer en versant le lait petit à petit)
+beurre[50 g Beurre] --> fondu(Faire fondre)
+delayer & fondu & rhum[1 cs Rhum] --> pate(Incorporer, laisser reposer 1 h) --> cuire(Cuire à la poêle, 1 min par face)

@@ -188,6 +188,19 @@ describe('layout', () => {
     expect(l.rows[0]![0]!.text).toBe('0.33');
   });
 
+  it('displays units through unitLabels', () => {
+    const r: Recipe = {
+      prerequisites: [],
+      ingredients: [
+        ing('a', { quantity: 1, unit: 'pincee' }),
+        ing('b', { quantity: 2, unit: 'g' }),
+      ],
+      steps: [],
+    };
+    const l = layout(r, { unitLabels: { pincee: 'pincée' } });
+    expect(l.rows.map((cells) => cells[0]!.text)).toEqual(['1 pincée', '2 g']);
+  });
+
   it('prerequisites become banners; the empty recipe has no rows', () => {
     const l = layout({ prerequisites: ['Préchauffer'], ingredients: [], steps: [] });
     expect(l).toEqual({ valid: true, columnCount: 2, banners: ['Préchauffer'], rows: [] });

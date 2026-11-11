@@ -1,0 +1,42 @@
+{
+  "prerequisites": [],
+  "ingredients": [
+    {
+      "key": "beurre",
+      "name": "Beurre mou",
+      "quantity": 125,
+      "unit": "g"
+    },
+    {
+      "key": "sucre",
+      "name": "Sucre roux",
+      "quantity": 100,
+      "unit": "g"
+    },
+    {
+      "key": "oeuf",
+      "name": "Oeuf",
+      "quantity": 1,
+      "unit": "pcs"
+    },
+    {
+      "key": "farine",
+      "name": "Farine",
+      "quantity": 200,
+      "unit": "g"
+    },
+    {
+      "key": "levure",
+      "name": "Levure chimique",
+      "quantity": 1,
+      "unit": "cc"
+    },
+    {
+      "key": "chocolat",
+      "name": "Pépites de chocolat",
+      "quantity": 150,
+      "unit": "g"
+    }
+  ],
+  "steps": []
+}

@@ -1,0 +1,8 @@
+%% Quiche — prerequisites, quoted labels and escapes
+before: Préchauffer le four à 180 °C
+before: "Sortir la pâte 10 min avant %% sinon elle casse"
+
+pate[1 pcs "Pâte brisée (prête à dérouler"] --> foncer("Foncer le moule [Ø 28 cm]")
+lardons[200 g Lardons] --> poeler(Faire revenir à sec)
+oeufs[3 pcs Oeufs] & creme[20 cl Crème "entière"] & lait[10 cl Lait] & epices["4 épices"] --> appareil(Battre l'appareil)
+foncer & poeler & appareil & gruyere[100 g Gruyère râpé] --> garnir("Garnir : lardons, appareil, gruyère \"à volonté\"") --> cuire(Cuire 35 min)

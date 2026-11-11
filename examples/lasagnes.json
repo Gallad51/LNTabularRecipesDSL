@@ -1,0 +1,145 @@
+{
+  "prerequisites": [
+    "Préchauffer le four à 200 °C",
+    "Beurrer un plat à gratin"
+  ],
+  "ingredients": [
+    {
+      "key": "oignon",
+      "name": "Oignons",
+      "quantity": 2,
+      "unit": "pcs"
+    },
+    {
+      "key": "carotte",
+      "name": "Carotte",
+      "quantity": 1,
+      "unit": "pcs"
+    },
+    {
+      "key": "boeuf",
+      "name": "Boeuf haché",
+      "quantity": 500,
+      "unit": "g"
+    },
+    {
+      "key": "tomate",
+      "name": "Tomates concassées",
+      "quantity": 800,
+      "unit": "g"
+    },
+    {
+      "key": "herbes",
+      "name": "Herbes de Provence"
+    },
+    {
+      "key": "beurre",
+      "name": "Beurre",
+      "quantity": 50,
+      "unit": "g"
+    },
+    {
+      "key": "farine",
+      "name": "Farine",
+      "quantity": 50,
+      "unit": "g"
+    },
+    {
+      "key": "lait",
+      "name": "Lait",
+      "quantity": 0.5,
+      "unit": "l"
+    },
+    {
+      "key": "muscade",
+      "name": "Muscade"
+    },
+    {
+      "key": "pates",
+      "name": "Feuilles de lasagne",
+      "quantity": 250,
+      "unit": "g"
+    },
+    {
+      "key": "fromage",
+      "name": "Parmesan râpé",
+      "quantity": 100,
+      "unit": "g"
+    }
+  ],
+  "steps": [
+    {
+      "key": "hacher",
+      "text": "Hacher finement",
+      "inputs": [
+        "oignon",
+        "carotte"
+      ]
+    },
+    {
+      "key": "revenir",
+      "text": "Faire revenir 5 min",
+      "inputs": [
+        "hacher"
+      ]
+    },
+    {
+      "key": "dorer",
+      "text": "Ajouter la viande, faire dorer",
+      "inputs": [
+        "revenir",
+        "boeuf"
+      ]
+    },
+    {
+      "key": "mijoter",
+      "text": "Mijoter 30 min",
+      "inputs": [
+        "dorer",
+        "tomate",
+        "herbes"
+      ]
+    },
+    {
+      "key": "bolo",
+      "text": "Réserver la bolognaise",
+      "inputs": [
+        "mijoter"
+      ]
+    },
+    {
+      "key": "roux",
+      "text": "Faire un roux",
+      "inputs": [
+        "beurre",
+        "farine"
+      ]
+    },
+    {
+      "key": "bechamel",
+      "text": "Fouetter jusqu'à épaississement",
+      "inputs": [
+        "roux",
+        "lait",
+        "muscade"
+      ]
+    },
+    {
+      "key": "monter",
+      "text": "Monter en couches : pâtes, bolognaise, béchamel ; finir par le fromage",
+      "inputs": [
+        "bolo",
+        "bechamel",
+        "pates",
+        "fromage"
+      ]
+    },
+    {
+      "key": "cuire",
+      "text": "Cuire 35 min",
+      "inputs": [
+        "monter"
+      ]
+    }
+  ]
+}

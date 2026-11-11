@@ -34,6 +34,8 @@ export interface Layout {
 export interface LayoutOptions extends RecipeOptions {
   /** Max decimals of displayed quantities (default 2). */
   maxDecimals?: number;
+  /** Display names for units, e.g. `{ pincee: 'pincée', cs: 'c. à s.' }`. Unlisted units show as-is. */
+  unitLabels?: Readonly<Record<string, string>>;
 }
 
 /**
@@ -60,7 +62,7 @@ export function layout(recipe: Recipe, options: LayoutOptions = {}): Layout {
             decimalSeparator: options.decimalSeparator,
             maxDecimals: options.maxDecimals,
           }),
-          unit,
+          unit === undefined ? undefined : (options.unitLabels?.[unit] ?? unit),
         ]
           .filter(Boolean)
           .join(' ');

@@ -1,0 +1,11 @@
+%% Lasagnes bolognaise — a deep, uneven tree
+before: Préchauffer le four à 200 °C
+before: Beurrer un plat à gratin
+
+oignon[2 pcs Oignons] & carotte[1 pcs Carotte] --> hacher(Hacher finement) --> revenir(Faire revenir 5 min)
+revenir & boeuf[500 g Boeuf haché] --> dorer(Ajouter la viande, faire dorer)
+dorer & tomate[800 g Tomates concassées] & herbes[Herbes de Provence] --> mijoter(Mijoter 30 min) --> bolo(Réserver la bolognaise)
+beurre[50 g Beurre] & farine[50 g Farine] --> roux(Faire un roux)
+roux & lait[1/2 l Lait] & muscade[Muscade] --> bechamel(Fouetter jusqu'à épaississement)
+bolo & bechamel & pates[250 g Feuilles de lasagne] & fromage[100 g Parmesan râpé] --> monter(Monter en couches : pâtes, bolognaise, béchamel ; finir par le fromage)
+monter --> cuire(Cuire 35 min)

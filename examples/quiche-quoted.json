@@ -1,0 +1,91 @@
+{
+  "prerequisites": [
+    "Préchauffer le four à 180 °C",
+    "Sortir la pâte 10 min avant %% sinon elle casse"
+  ],
+  "ingredients": [
+    {
+      "key": "pate",
+      "name": "Pâte brisée (prête à dérouler",
+      "quantity": 1,
+      "unit": "pcs"
+    },
+    {
+      "key": "lardons",
+      "name": "Lardons",
+      "quantity": 200,
+      "unit": "g"
+    },
+    {
+      "key": "oeufs",
+      "name": "Oeufs",
+      "quantity": 3,
+      "unit": "pcs"
+    },
+    {
+      "key": "creme",
+      "name": "Crème \"entière\"",
+      "quantity": 20,
+      "unit": "cl"
+    },
+    {
+      "key": "lait",
+      "name": "Lait",
+      "quantity": 10,
+      "unit": "cl"
+    },
+    {
+      "key": "epices",
+      "name": "4 épices"
+    },
+    {
+      "key": "gruyere",
+      "name": "Gruyère râpé",
+      "quantity": 100,
+      "unit": "g"
+    }
+  ],
+  "steps": [
+    {
+      "key": "foncer",
+      "text": "Foncer le moule [Ø 28 cm]",
+      "inputs": [
+        "pate"
+      ]
+    },
+    {
+      "key": "poeler",
+      "text": "Faire revenir à sec",
+      "inputs": [
+        "lardons"
+      ]
+    },
+    {
+      "key": "appareil",
+      "text": "Battre l'appareil",
+      "inputs": [
+        "oeufs",
+        "creme",
+        "lait",
+        "epices"
+      ]
+    },
+    {
+      "key": "garnir",
+      "text": "Garnir : lardons, appareil, gruyère \"à volonté\"",
+      "inputs": [
+        "foncer",
+        "poeler",
+        "appareil",
+        "gruyere"
+      ]
+    },
+    {
+      "key": "cuire",
+      "text": "Cuire 35 min",
+      "inputs": [
+        "garnir"
+      ]
+    }
+  ]
+}

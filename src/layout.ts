@@ -1,0 +1,139 @@
+import { hasErrors } from './diagnostics';
+import type { Recipe, RecipeOptions, Step } from './model';
+import { normalize } from './normalize';
+import { formatQuantity } from './quantity';
+import { validate } from './validate';
+
+export type CellKind = 'quantity' | 'ingredient' | 'step';
+
+export interface Cell {
+  kind: CellKind;
+  /** Ingredient key (quantity / ingredient cells) or step key. */
+  key: string;
+  text: string;
+  /** 0-based grid position of the top-left corner. */
+  row: number;
+  col: number;
+  rowSpan: number;
+  colSpan: number;
+  /** True for the final step (rightmost column). */
+  final?: boolean;
+}
+
+export interface Layout {
+  /** False when the recipe is not a valid tree: only ingredients are laid out (draft layout). */
+  valid: boolean;
+  /** 2 (quantity + ingredient) + depth of the final step. */
+  columnCount: number;
+  /** Prerequisites, rendered as full-width rows above the table. */
+  banners: string[];
+  /** `rows[r]` = cells that *start* on row r, left to right (HTML table semantics). */
+  rows: Cell[][];
+}
+
+export interface LayoutOptions extends RecipeOptions {
+  /** Max decimals of displayed quantities (default 2). */
+  maxDecimals?: number;
+}
+
+/**
+ * Computes the tabular grid of a recipe.
+ *
+ * - Column 0 = quantity, column 1 = ingredient, columns 2… = steps by depth:
+ *   depth(ingredient) = 0, depth(step) = 1 + max depth of its inputs,
+ *   step column = 1 + depth. The final step is alone in the last column.
+ * - One row per ingredient (normalized depth-first order). A step spans the
+ *   rows of all the ingredients under it.
+ * - No empty cells: a step or ingredient whose consumer sits more than one
+ *   column to the right stretches (`colSpan`) up to that consumer.
+ *
+ * Drafts (and invalid recipes, with `valid: false`) get a 2-column layout.
+ */
+export function layout(recipe: Recipe, options: LayoutOptions = {}): Layout {
+  const r = normalize(recipe, options);
+  const valid = !hasErrors(validate(r, options));
+  const quantityText = (quantity?: number, unit?: string) =>
+    quantity === undefined
+      ? ''
+      : [
+          formatQuantity(quantity, {
+            decimalSeparator: options.decimalSeparator,
+            maxDecimals: options.maxDecimals,
+          }),
+          unit,
+        ]
+          .filter(Boolean)
+          .join(' ');
+
+  const useTree = valid && r.steps.length > 0;
+  const stepByKey = new Map(r.steps.map((s) => [s.key, s]));
+  const depth = new Map<string, number>();
+  const consumer = new Map<string, Step>();
+  const leaves = new Map<string, string[]>(); // step key → ingredient keys under it, in row order
+  if (useTree) {
+    for (const step of r.steps) {
+      // Steps are ordered so that inputs come first: one pass is enough.
+      let d = 0;
+      const under: string[] = [];
+      for (const input of step.inputs) {
+        consumer.set(input, step);
+        const child = stepByKey.get(input);
+        d = Math.max(d, child ? depth.get(input)! : 0);
+        under.push(...(child ? leaves.get(input)! : [input]));
+      }
+      depth.set(step.key, d + 1);
+      leaves.set(step.key, under);
+    }
+  }
+
+  const root = r.steps[r.steps.length - 1];
+  const columnCount = useTree && root ? 2 + depth.get(root.key)! : 2;
+  const columnOf = (stepKey: string) => 1 + depth.get(stepKey)!;
+  const rowOf = new Map(r.ingredients.map((ingredient, i) => [ingredient.key, i]));
+
+  const rows: Cell[][] = r.ingredients.map((ingredient, row) => {
+    const parent = consumer.get(ingredient.key);
+    return [
+      {
+        kind: 'quantity',
+        key: ingredient.key,
+        text: quantityText(ingredient.quantity, ingredient.unit),
+        row,
+        col: 0,
+        rowSpan: 1,
+        colSpan: 1,
+      },
+      {
+        kind: 'ingredient',
+        key: ingredient.key,
+        text: ingredient.name,
+        row,
+        col: 1,
+        rowSpan: 1,
+        colSpan: parent ? columnOf(parent.key) - 1 : 1,
+      },
+    ];
+  });
+
+  if (useTree) {
+    for (const step of r.steps) {
+      const under = leaves.get(step.key)!;
+      const row = rowOf.get(under[0]!)!;
+      const col = columnOf(step.key);
+      const parent = consumer.get(step.key);
+      rows[row]!.push({
+        kind: 'step',
+        key: step.key,
+        text: step.text,
+        row,
+        col,
+        rowSpan: under.length,
+        colSpan: parent ? columnOf(parent.key) - col : 1,
+        ...(parent ? {} : { final: true }),
+      });
+    }
+    for (const cells of rows) cells.sort((a, b) => a.col - b.col);
+  }
+
+  return { valid, columnCount, banners: [...r.prerequisites], rows };
+}

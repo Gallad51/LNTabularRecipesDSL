@@ -1,0 +1,151 @@
+/*
+ * ln-tabular-recipes-dsl — default stylesheet for renderHtml() output.
+ * Customise through the custom properties below. Dark mode follows
+ * prefers-color-scheme, and also `.theme-dark` (Obsidian) / `[data-theme="dark"]`.
+ */
+.trd-wrap {
+  --trd-fg: #1f2328;
+  --trd-bg: #ffffff;
+  --trd-border: #8c959f;
+  --trd-border-soft: #d0d7de;
+  --trd-qty-fg: #57606a;
+  --trd-step-bg: #f6f8fa;
+  --trd-final-bg: #eaeef2;
+  --trd-banner-bg: #fff8c5;
+  --trd-invalid: #cf222e;
+  --trd-qty-width: 5.5rem;
+  --trd-radius: 6px;
+  --trd-pad: 0.4rem 0.6rem;
+  --trd-font: inherit;
+
+  overflow-x: auto;
+  max-width: 100%;
+  color: var(--trd-fg);
+  font-family: var(--trd-font);
+}
+
+@media (prefers-color-scheme: dark) {
+  .trd-wrap {
+    --trd-fg: #e6edf3;
+    --trd-bg: #0d1117;
+    --trd-border: #6e7681;
+    --trd-border-soft: #30363d;
+    --trd-qty-fg: #8d96a0;
+    --trd-step-bg: #161b22;
+    --trd-final-bg: #21262d;
+    --trd-banner-bg: #3b2e0a;
+  }
+}
+
+.theme-dark .trd-wrap,
+[data-theme='dark'] .trd-wrap {
+  --trd-fg: #e6edf3;
+  --trd-bg: #0d1117;
+  --trd-border: #6e7681;
+  --trd-border-soft: #30363d;
+  --trd-qty-fg: #8d96a0;
+  --trd-step-bg: #161b22;
+  --trd-final-bg: #21262d;
+  --trd-banner-bg: #3b2e0a;
+}
+
+/* An explicit light theme wins over the OS preference. */
+.theme-light .trd-wrap,
+[data-theme='light'] .trd-wrap {
+  --trd-fg: #1f2328;
+  --trd-bg: #ffffff;
+  --trd-border: #8c959f;
+  --trd-border-soft: #d0d7de;
+  --trd-qty-fg: #57606a;
+  --trd-step-bg: #f6f8fa;
+  --trd-final-bg: #eaeef2;
+  --trd-banner-bg: #fff8c5;
+}
+
+.trd-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--trd-bg);
+  border: 1px solid var(--trd-border);
+  border-radius: var(--trd-radius);
+  overflow: hidden;
+}
+
+.trd-table caption {
+  caption-side: top;
+  text-align: left;
+  font-weight: 600;
+  padding: 0 0 0.4rem;
+}
+
+.trd-table td {
+  padding: var(--trd-pad);
+  vertical-align: middle;
+  border-right: 1px solid var(--trd-border-soft);
+  border-bottom: 1px solid var(--trd-border-soft);
+  background: var(--trd-bg);
+}
+
+/* Merged blocks get a stronger separator than plain ingredient rows. */
+.trd-table td.trd-step,
+.trd-table td.trd-banner {
+  border-left: 1px solid var(--trd-border);
+  border-bottom: 1px solid var(--trd-border);
+}
+
+.trd-table tr:last-child td,
+.trd-table td[rowspan] {
+  border-bottom-color: var(--trd-border);
+}
+
+.trd-table td:last-child {
+  border-right: 0;
+}
+
+.trd-qty {
+  color: var(--trd-qty-fg);
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  min-width: var(--trd-qty-width);
+  box-sizing: border-box;
+}
+
+.trd-ingredient {
+  white-space: nowrap;
+}
+
+.trd-step {
+  background: var(--trd-step-bg) !important;
+  min-width: 8rem;
+}
+
+.trd-final {
+  background: var(--trd-final-bg) !important;
+  font-weight: 600;
+}
+
+.trd-banner {
+  background: var(--trd-banner-bg) !important;
+  font-style: italic;
+}
+
+.trd-invalid {
+  border-color: var(--trd-invalid);
+  border-style: dashed;
+}
+
+/* Optional: keep quantity + ingredient visible while scrolling horizontally. */
+.trd-sticky td.trd-qty,
+.trd-sticky td.trd-ingredient {
+  position: sticky;
+  z-index: 1;
+}
+
+.trd-sticky td.trd-qty {
+  left: 0;
+}
+
+.trd-sticky td.trd-ingredient {
+  left: var(--trd-qty-width);
+}

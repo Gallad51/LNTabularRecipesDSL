@@ -5,6 +5,18 @@ All notable changes to this project are documented here. The format follows
 [Semantic Versioning](https://semver.org/). The text format is versioned in
 [SPEC.md](./SPEC.md).
 
+## [0.1.1] - 2026-11-12
+
+First release published from GitHub Actions with npm provenance (trusted
+publishing). No library changes.
+
+### Changed
+
+- CI and publish workflows use `actions/checkout@v5` and
+  `actions/setup-node@v5` (Node 24 runtime).
+- `package.json` now points to the GitHub repository (`repository`,
+  `homepage`, `bugs`).
+
 ## [0.1.0] - 2026-11-12
 
 First release, implementing spec v0.1.

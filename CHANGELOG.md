@@ -5,6 +5,21 @@ All notable changes to this project are documented here. The format follows
 [Semantic Versioning](https://semver.org/). The text format is versioned in
 [SPEC.md](./SPEC.md).
 
+## [0.2.0] - 2026-11-12
+
+### Added
+
+- **Partial layout** for visual editors: `layout(recipe, { partial: true })`
+  lays out a recipe under construction (a forest: several root steps and/or
+  unconsumed ingredients) instead of falling back to the 2-column draft layout.
+  Open nodes stretch to the last column and carry the new `Cell.open` flag.
+  Complete trees are laid out exactly as before. See SPEC §6.1.
+- `normalize(recipe, { partial: true })` puts a forest's rows in forest order;
+  new exports `forestOrder`, `treeOrder`, `isForest`, `INCOMPLETE_TREE_CODES`
+  and type `NormalizeOptions`.
+- `renderHtml` adds class `trd-open` to open cells (dashed border in
+  `style.css`).
+
 ## [0.1.2] - 2026-11-12
 
 ### Added

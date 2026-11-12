@@ -1,6 +1,6 @@
 {
   "name": "ln-tabular-recipes-dsl",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Tabular recipes: a Mermaid-like DSL, a tree model, validation and a rowspan/colspan table layout + HTML renderer. Zero runtime dependencies.",
   "keywords": [
     "recipe",

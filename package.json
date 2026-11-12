@@ -13,6 +13,14 @@
   ],
   "license": "MIT",
   "author": "Grégory Lecomte",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gallad51/LNTabularRecipesDSL.git"
+  },
+  "homepage": "https://github.com/Gallad51/LNTabularRecipesDSL#readme",
+  "bugs": {
+    "url": "https://github.com/Gallad51/LNTabularRecipesDSL/issues"
+  },
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

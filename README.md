@@ -328,13 +328,9 @@ provenance.
 First time:
 
 1. **npm account**: create one on <https://www.npmjs.com/signup> and enable 2FA.
-2. **GitHub repository**: create it (e.g. `LNTabularRecipesDSL`), then:
-   ```sh
-   git remote add origin git@github.com:<you>/LNTabularRecipesDSL.git
-   git push -u origin main
-   ```
-   Add `repository`, `homepage` and `bugs` fields to `package.json` pointing
-   to it (npm provenance requires `repository.url` to match the GitHub repo).
+2. **GitHub repository**: <https://github.com/Gallad51/LNTabularRecipesDSL>
+   (`repository`, `homepage` and `bugs` in `package.json` point to it — npm
+   provenance requires `repository.url` to match the GitHub repo).
 3. **First publish** — the package must exist before trusted publishing can be
    configured. Either:
    - locally: `npm login && npm publish --access public`, or
@@ -342,7 +338,7 @@ First time:
      package / all packages), store it as the `NPM_TOKEN` repository secret,
      then `git tag v0.1.0 && git push origin v0.1.0`.
 4. **Trusted publishing (recommended)**: on npmjs.com → package → Settings →
-   _Trusted Publisher_ → GitHub Actions, with your user/org, repository
+   _Trusted Publisher_ → GitHub Actions, with owner `Gallad51`, repository
    `LNTabularRecipesDSL` and workflow `publish.yml`. Then delete the
    `NPM_TOKEN` secret and revoke the token: the workflow authenticates with
    OIDC (`id-token: write`) — no long-lived secret.

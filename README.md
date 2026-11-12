@@ -172,12 +172,28 @@ interface Cell {
 
 Returns an escaped HTML string (`<div class="trd-wrap"><table class="trd-table">…`).
 Options: layout options + `classPrefix` (default `trd`; the bundled CSS uses
-`trd`), `stickyIngredients`, `caption`. Classes: `trd-wrap`, `trd-table`,
-`trd-sticky`, `trd-invalid`, `trd-banner-row`, `trd-banner`, `trd-qty`,
-`trd-ingredient`, `trd-step`, `trd-final`; cells carry `data-key`.
+`trd`), `stickyIngredients`, `caption`, `stepOrientation`. Classes: `trd-wrap`,
+`trd-auto`, `trd-table`, `trd-sticky`, `trd-invalid`, `trd-vsteps`,
+`trd-banner-row`, `trd-banner`, `trd-qty`, `trd-ingredient`, `trd-step`,
+`trd-step-text`, `trd-final`; cells carry `data-key`.
+
+`stepOrientation` makes tables fit small screens by turning step texts
+sideways (read bottom to top), so each step column is about one line wide:
+
+| Value                    | Effect                                                                  |
+| ------------------------ | ----------------------------------------------------------------------- |
+| `'horizontal'` (default) | Unchanged output                                                        |
+| `'vertical'`             | Step texts always vertical (`trd-vsteps` on the table)                  |
+| `'auto'`                 | Vertical only when the wrapper is narrower than 40rem (container query) |
+
+With `'auto'` the wrapper (`trd-wrap trd-auto`) is a size container: give it a
+width from its parent (a block, or a flex/grid item with a set width), not from
+its content. `--trd-step-max-height` (default `13em`) caps the height of a
+vertical step text before it wraps onto a second column.
 
 `style.css` exposes custom properties (`--trd-fg`, `--trd-bg`, `--trd-border`,
-`--trd-step-bg`, `--trd-final-bg`, `--trd-banner-bg`, `--trd-qty-width`, …)
+`--trd-step-bg`, `--trd-final-bg`, `--trd-banner-bg`, `--trd-qty-width`,
+`--trd-step-max-height`, …)
 and switches to dark with `prefers-color-scheme`, `.theme-dark` (Obsidian) or
 `[data-theme="dark"]`; `.theme-light` / `[data-theme="light"]` force light.
 

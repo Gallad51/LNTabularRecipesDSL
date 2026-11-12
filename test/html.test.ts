@@ -50,4 +50,21 @@ describe('renderHtml', () => {
     expect(html).toContain('<caption>Test</caption>');
     expect(html).not.toContain('trd-');
   });
+
+  it('wraps step texts for vertical and auto step orientation', () => {
+    const plain = renderHtml(gratin());
+    expect(plain).not.toContain('trd-step-text');
+    expect(plain).not.toContain('trd-vsteps');
+
+    const vertical = renderHtml(gratin(), { stepOrientation: 'vertical' });
+    expect(vertical).toContain('<div class="trd-wrap">\n<table class="trd-table trd-vsteps">');
+    expect(vertical).toContain(
+      '<td class="trd-step trd-final" data-key="cuisson" rowspan="7"><span class="trd-step-text">Cuire 1 h</span></td>',
+    );
+    expect(vertical).toContain('<td class="trd-ingredient" data-key="pdt">Pommes de terre</td>');
+
+    const auto = renderHtml(gratin(), { stepOrientation: 'auto', classPrefix: 'rx' });
+    expect(auto).toContain('<div class="rx-wrap rx-auto">\n<table class="rx-table">');
+    expect(auto).toContain('<span class="rx-step-text">Cuire 1 h</span>');
+  });
 });

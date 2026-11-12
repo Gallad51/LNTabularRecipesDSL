@@ -16,6 +16,7 @@
   --trd-qty-width: 5.5rem;
   --trd-radius: 6px;
   --trd-pad: 0.4rem 0.6rem;
+  --trd-step-max-height: 13em;
   --trd-font: inherit;
 
   overflow-x: auto;
@@ -148,4 +149,57 @@
 
 .trd-sticky td.trd-ingredient {
   left: var(--trd-qty-width);
+}
+
+/*
+ * Optional: vertical step texts (renderHtml `stepOrientation`), read bottom
+ * to top so step columns stay narrow on small screens. `.trd-vsteps` always,
+ * `.trd-auto` only when the wrapper is narrower than 40rem.
+ */
+.trd-auto {
+  container: trd / inline-size;
+}
+
+.trd-vsteps td.trd-step {
+  min-width: 0;
+  padding: 0.5rem 0.3rem;
+  text-align: center;
+  vertical-align: bottom;
+}
+
+.trd-vsteps .trd-step-text {
+  display: inline-block;
+  writing-mode: sideways-lr;
+  max-inline-size: var(--trd-step-max-height);
+  text-align: start;
+}
+
+@supports not (writing-mode: sideways-lr) {
+  .trd-vsteps .trd-step-text {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+}
+
+@container trd (max-width: 40rem) {
+  .trd-table td.trd-step {
+    min-width: 0;
+    padding: 0.5rem 0.3rem;
+    text-align: center;
+    vertical-align: bottom;
+  }
+
+  .trd-step-text {
+    display: inline-block;
+    writing-mode: sideways-lr;
+    max-inline-size: var(--trd-step-max-height);
+    text-align: start;
+  }
+
+  @supports not (writing-mode: sideways-lr) {
+    .trd-step-text {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+  }
 }

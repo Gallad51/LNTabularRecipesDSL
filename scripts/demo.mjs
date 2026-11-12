@@ -14,6 +14,7 @@ const sections = readdirSync(dir)
       ? renderHtml(result.recipe, {
           decimalSeparator: ',',
           stickyIngredients: true,
+          stepOrientation: 'auto',
           unitLabels: { pincee: 'pincée', cs: 'c. à s.', cc: 'c. à c.' },
         })
       : `<pre class="error">${escapeHtml(result.diagnostics.map((d) => `${d.line}:${d.column} ${d.code} ${d.message}`).join('\n'))}</pre>`;

@@ -5,6 +5,18 @@ All notable changes to this project are documented here. The format follows
 [Semantic Versioning](https://semver.org/). The text format is versioned in
 [SPEC.md](./SPEC.md).
 
+## [Unreleased]
+
+### Added
+
+- `renderHtml` option `stepOrientation` (`'horizontal'` | `'vertical'` |
+  `'auto'`): step texts can be turned sideways (read bottom to top) so step
+  columns stay narrow on mobile; `'auto'` switches with a container query when
+  the wrapper is narrower than 40rem. New classes `trd-vsteps`, `trd-auto`,
+  `trd-step-text` and custom property `--trd-step-max-height` in `style.css`.
+  Default output is unchanged.
+- The demo page renders with `stepOrientation: 'auto'`.
+
 ## [0.1.1] - 2026-11-12
 
 First release published from GitHub Actions with npm provenance (trusted

@@ -8,6 +8,13 @@ export interface RenderHtmlOptions extends LayoutOptions {
   stickyIngredients?: boolean;
   /** Optional `<caption>` text (e.g. the recipe name). */
   caption?: string;
+  /**
+   * Orientation of the step texts (default `'horizontal'`).
+   * - `'vertical'`: step texts read bottom to top, so step columns stay narrow (mobile-friendly).
+   * - `'auto'`: vertical only when the wrapper is narrower than 40rem (CSS container query);
+   *   the wrapper must then take its width from its parent, not from its content.
+   */
+  stepOrientation?: 'horizontal' | 'vertical' | 'auto';
 }
 
 const ESCAPES: Record<string, string> = {
@@ -28,8 +35,10 @@ export function escapeHtml(text: string): string {
  * All text is escaped. Pair it with `ln-tabular-recipes-dsl/style.css`, or
  * style the classes yourself:
  *
- * `{p}-wrap` (scroll container), `{p}-table` (+ `{p}-sticky`, `{p}-invalid`),
- * `{p}-banner`, `{p}-qty`, `{p}-ingredient`, `{p}-step` (+ `{p}-final`).
+ * `{p}-wrap` (scroll container, + `{p}-auto`), `{p}-table` (+ `{p}-sticky`,
+ * `{p}-invalid`, `{p}-vsteps`), `{p}-banner`, `{p}-qty`, `{p}-ingredient`,
+ * `{p}-step` (+ `{p}-final`), `{p}-step-text` (step text wrapper, only when
+ * `stepOrientation` is not horizontal).
  * Cells carry `data-key` with the ingredient/step key.
  */
 export function renderHtml(recipe: Recipe, options: RenderHtmlOptions = {}): string {
@@ -38,6 +47,11 @@ export function renderHtml(recipe: Recipe, options: RenderHtmlOptions = {}): str
   const tableClasses = [`${p}-table`];
   if (options.stickyIngredients) tableClasses.push(`${p}-sticky`);
   if (!grid.valid) tableClasses.push(`${p}-invalid`);
+  const orientation = options.stepOrientation ?? 'horizontal';
+  if (orientation === 'vertical') tableClasses.push(`${p}-vsteps`);
+  const wrapClasses = [`${p}-wrap`];
+  if (orientation === 'auto') wrapClasses.push(`${p}-auto`);
+  const wrapStepText = orientation !== 'horizontal';
 
   const cellHtml = (cell: Cell) => {
     const classes = [`${p}-${cell.kind === 'quantity' ? 'qty' : cell.kind}`];
@@ -45,10 +59,16 @@ export function renderHtml(recipe: Recipe, options: RenderHtmlOptions = {}): str
     const attrs = [`class="${classes.join(' ')}"`, `data-key="${escapeHtml(cell.key)}"`];
     if (cell.rowSpan > 1) attrs.push(`rowspan="${cell.rowSpan}"`);
     if (cell.colSpan > 1) attrs.push(`colspan="${cell.colSpan}"`);
-    return `<td ${attrs.join(' ')}>${escapeHtml(cell.text)}</td>`;
+    const text = escapeHtml(cell.text);
+    const content =
+      wrapStepText && cell.kind === 'step' ? `<span class="${p}-step-text">${text}</span>` : text;
+    return `<td ${attrs.join(' ')}>${content}</td>`;
   };
 
-  const parts: string[] = [`<div class="${p}-wrap">`, `<table class="${tableClasses.join(' ')}">`];
+  const parts: string[] = [
+    `<div class="${wrapClasses.join(' ')}">`,
+    `<table class="${tableClasses.join(' ')}">`,
+  ];
   if (options.caption !== undefined)
     parts.push(`<caption>${escapeHtml(options.caption)}</caption>`);
   parts.push('<tbody>');

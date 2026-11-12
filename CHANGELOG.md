@@ -5,7 +5,7 @@ All notable changes to this project are documented here. The format follows
 [Semantic Versioning](https://semver.org/). The text format is versioned in
 [SPEC.md](./SPEC.md).
 
-## [Unreleased]
+## [0.1.2] - 2026-11-12
 
 ### Added
 

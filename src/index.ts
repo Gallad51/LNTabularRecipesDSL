@@ -11,7 +11,8 @@ export {
 } from './diagnostics';
 
 export { validate } from './validate';
-export { normalize } from './normalize';
+export type { NormalizeOptions } from './normalize';
+export { normalize, treeOrder, forestOrder, isForest, INCOMPLETE_TREE_CODES } from './normalize';
 
 export type { ParseResult, ParseOptions } from './dsl/parser';
 export { parse } from './dsl/parser';

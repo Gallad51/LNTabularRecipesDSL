@@ -126,6 +126,11 @@
   font-weight: 600;
 }
 
+.trd-open {
+  border-style: dashed;
+  font-style: italic;
+}
+
 .trd-banner {
   background: var(--trd-banner-bg) !important;
   font-style: italic;

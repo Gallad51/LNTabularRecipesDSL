@@ -37,8 +37,9 @@ export function escapeHtml(text: string): string {
  *
  * `{p}-wrap` (scroll container, + `{p}-auto`), `{p}-table` (+ `{p}-sticky`,
  * `{p}-invalid`, `{p}-vsteps`), `{p}-banner`, `{p}-qty`, `{p}-ingredient`,
- * `{p}-step` (+ `{p}-final`), `{p}-step-text` (step text wrapper, only when
- * `stepOrientation` is not horizontal).
+ * `{p}-step` (+ `{p}-final`; `{p}-open` on open cells of a partial layout),
+ * `{p}-step-text` (step text wrapper, only when `stepOrientation` is not
+ * horizontal).
  * Cells carry `data-key` with the ingredient/step key.
  */
 export function renderHtml(recipe: Recipe, options: RenderHtmlOptions = {}): string {
@@ -56,6 +57,7 @@ export function renderHtml(recipe: Recipe, options: RenderHtmlOptions = {}): str
   const cellHtml = (cell: Cell) => {
     const classes = [`${p}-${cell.kind === 'quantity' ? 'qty' : cell.kind}`];
     if (cell.final) classes.push(`${p}-final`);
+    if (cell.open) classes.push(`${p}-open`);
     const attrs = [`class="${classes.join(' ')}"`, `data-key="${escapeHtml(cell.key)}"`];
     if (cell.rowSpan > 1) attrs.push(`rowspan="${cell.rowSpan}"`);
     if (cell.colSpan > 1) attrs.push(`colspan="${cell.colSpan}"`);

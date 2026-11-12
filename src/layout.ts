@@ -1,6 +1,6 @@
 import { hasErrors } from './diagnostics';
 import type { Recipe, RecipeOptions, Step } from './model';
-import { normalize } from './normalize';
+import { isForest, normalize } from './normalize';
 import { formatQuantity } from './quantity';
 import { validate } from './validate';
 
@@ -18,6 +18,13 @@ export interface Cell {
   colSpan: number;
   /** True for the final step (rightmost column). */
   final?: boolean;
+  /**
+   * Partial layout only: true for the cells of a node no step consumes yet
+   * (unconsumed ingredients — both their quantity and name cells — and root
+   * steps of an unfinished recipe). These are what an editor lets the user
+   * combine. Never set on a complete tree.
+   */
+  open?: boolean;
 }
 
 export interface Layout {
@@ -36,6 +43,14 @@ export interface LayoutOptions extends RecipeOptions {
   maxDecimals?: number;
   /** Display names for units, e.g. `{ pincee: 'pincée', cs: 'c. à s.' }`. Unlisted units show as-is. */
   unitLabels?: Readonly<Record<string, string>>;
+  /**
+   * Lay out a recipe under construction (a forest: several root steps and/or
+   * unconsumed ingredients) instead of falling back to the 2-column draft
+   * layout. Each subtree gets contiguous rows, open nodes stretch to the last
+   * column and carry `open: true`. Complete trees are laid out exactly as
+   * without the option. Default `false`.
+   */
+  partial?: boolean;
 }
 
 /**
@@ -49,11 +64,15 @@ export interface LayoutOptions extends RecipeOptions {
  * - No empty cells: a step or ingredient whose consumer sits more than one
  *   column to the right stretches (`colSpan`) up to that consumer.
  *
- * Drafts (and invalid recipes, with `valid: false`) get a 2-column layout.
+ * Drafts (and invalid recipes, with `valid: false`) get a 2-column layout,
+ * unless `partial` is set and the recipe is a well-formed forest: then every
+ * subtree is laid out and open nodes are flagged (still `valid: false`).
  */
 export function layout(recipe: Recipe, options: LayoutOptions = {}): Layout {
   const r = normalize(recipe, options);
-  const valid = !hasErrors(validate(r, options));
+  const diagnostics = validate(r, options);
+  const valid = !hasErrors(diagnostics);
+  const partial = !valid && options.partial === true && isForest(diagnostics);
   const quantityText = (quantity?: number, unit?: string) =>
     quantity === undefined
       ? ''
@@ -67,7 +86,9 @@ export function layout(recipe: Recipe, options: LayoutOptions = {}): Layout {
           .filter(Boolean)
           .join(' ');
 
-  const useTree = valid && r.steps.length > 0;
+  const useTree = (valid || partial) && r.steps.length > 0;
+  // Drafts in partial mode: every ingredient is open.
+  const flagOpen = partial || (options.partial === true && valid && r.steps.length === 0);
   const stepByKey = new Map(r.steps.map((s) => [s.key, s]));
   const depth = new Map<string, number>();
   const consumer = new Map<string, Step>();
@@ -88,13 +109,18 @@ export function layout(recipe: Recipe, options: LayoutOptions = {}): Layout {
     }
   }
 
-  const root = r.steps[r.steps.length - 1];
-  const columnCount = useTree && root ? 2 + depth.get(root.key)! : 2;
+  // Complete tree: the root is the last step. Forest: deepest root.
+  let maxDepth = 0;
+  for (const step of r.steps) {
+    if (useTree && !consumer.has(step.key)) maxDepth = Math.max(maxDepth, depth.get(step.key)!);
+  }
+  const columnCount = 2 + maxDepth;
   const columnOf = (stepKey: string) => 1 + depth.get(stepKey)!;
   const rowOf = new Map(r.ingredients.map((ingredient, i) => [ingredient.key, i]));
 
   const rows: Cell[][] = r.ingredients.map((ingredient, row) => {
     const parent = consumer.get(ingredient.key);
+    const open = flagOpen && !parent;
     return [
       {
         kind: 'quantity',
@@ -104,6 +130,7 @@ export function layout(recipe: Recipe, options: LayoutOptions = {}): Layout {
         col: 0,
         rowSpan: 1,
         colSpan: 1,
+        ...(open ? { open } : {}),
       },
       {
         kind: 'ingredient',
@@ -112,7 +139,8 @@ export function layout(recipe: Recipe, options: LayoutOptions = {}): Layout {
         row,
         col: 1,
         rowSpan: 1,
-        colSpan: parent ? columnOf(parent.key) - 1 : 1,
+        colSpan: parent ? columnOf(parent.key) - 1 : open ? columnCount - 1 : 1,
+        ...(open ? { open } : {}),
       },
     ];
   });
@@ -130,8 +158,8 @@ export function layout(recipe: Recipe, options: LayoutOptions = {}): Layout {
         row,
         col,
         rowSpan: under.length,
-        colSpan: parent ? columnOf(parent.key) - col : 1,
-        ...(parent ? {} : { final: true }),
+        colSpan: parent ? columnOf(parent.key) - col : partial ? columnCount - col : 1,
+        ...(parent ? {} : partial ? { open: true } : { final: true }),
       });
     }
     for (const cells of rows) cells.sort((a, b) => a.col - b.col);

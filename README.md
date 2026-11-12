@@ -141,6 +141,9 @@ only, means valid. Use `hasErrors(diagnostics)` to decide.
 Trims, canonicalises units, and reorders ingredients depth-first from the final
 step when the tree is valid (so each step's ingredients are contiguous rows).
 Never throws on well-shaped input; drafts and invalid recipes keep their order.
+With `{ partial: true }`, a recipe under construction (a forest, see below) gets
+the forest row order (`forestOrder`); `isForest(validate(r))` tells whether a
+recipe is one.
 
 ### `layout(recipe, options?)`
 
@@ -160,6 +163,7 @@ interface Cell {
   rowSpan: number;
   colSpan: number;
   final?: boolean;
+  open?: boolean; // partial layout only
 }
 ```
 
@@ -167,6 +171,14 @@ interface Cell {
 `<tr>`/`<td rowspan colspan>` in any framework. Extra options: `maxDecimals`
 (default 2), `unitLabels` (e.g. `{ pincee: 'pincée' }`). Invalid recipes give
 `valid: false` and the 2-column ingredient layout.
+
+**Partial layout** (`partial: true`, since 0.2.0) — for visual editors. A recipe
+under construction is a _forest_: several root steps and/or unconsumed
+ingredients, but no structural error. Instead of the 2-column fallback, every
+subtree is laid out (contiguous rows, combined rows move up to the first of
+them), open nodes (unconsumed ingredients, root steps) stretch to the last
+column and carry `open: true`, and `valid` stays `false`. Complete trees are
+laid out exactly as without the option. See SPEC §6.1.
 
 ### `renderHtml(recipe, options?)`
 

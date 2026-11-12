@@ -3,8 +3,9 @@
 This document specifies the recipe model, the text format (`.trecipe`), how
 text maps to the model, and how a recipe is laid out as a table. It is the
 reference for every implementation and consumer of `ln-tabular-recipes-dsl`
-(API, web editor, Obsidian plugin…). The library version implementing it is
-`0.1.x`.
+(API, web editor, Obsidian plugin…). The library versions implementing it are
+`0.1.x` and `0.2.x` (0.2 adds the partial layout of §6.1; the text format is
+unchanged).
 
 - [1. The tabular view](#1-the-tabular-view)
 - [2. Model](#2-model)
@@ -100,7 +101,8 @@ cannot be expressed in the text format (it would be read as part of the name).
   ingredients of every step contiguous rows.
 
 Steps keep their order. Drafts and invalid recipes keep their ingredient
-order. Normalization never fails on well-shaped input.
+order — except with the `partial` option on a **forest** (see §6.1), whose rows
+are put in forest order. Normalization never fails on well-shaped input.
 
 ## 3. Text format
 
@@ -241,6 +243,32 @@ Input: a normalized valid recipe. Output: `{ valid, columnCount, banners, rows }
   what an HTML `<table>` with `rowspan`/`colspan` needs.
 - Prerequisites become `banners`, rendered as full-width rows above.
 - Invalid recipes: `valid = false`, draft layout (ingredients only).
+
+### 6.1 Partial layout (forest)
+
+Meant for editors that build a recipe by combining cells. A **forest** is a
+recipe with steps whose only errors are `UNCONSUMED`, `MULTIPLE_ROOTS` and
+non-structural ones (`EMPTY_TEXT`, `INVALID_QUANTITY`, `UNIT_WITHOUT_QUANTITY`,
+`INVALID_KEY`): ingredients and steps form several trees. A **root** is a step
+no step consumes; an **open** node is a root or an unconsumed ingredient.
+
+With the `partial` option, a forest is laid out instead of falling back to the
+draft layout (`valid` stays `false`):
+
+- **Row order** (forest order): each root forms a group with the ingredients
+  under it (depth-first, inputs in order); each unconsumed ingredient is a group
+  of its own; groups are sorted by the position of their first ingredient in the
+  given order. Combining cells therefore moves the combined rows up to the first
+  of them and leaves the rest of the table in place. On a complete tree, forest
+  order = tree order.
+- `columnCount = 2 + max(depth(root))` (2 when no step).
+- Cells are computed as in §6. Open nodes stretch to the last column (ingredient
+  name `colSpan = columnCount − 1`, root step `colSpan = columnCount − col`) and
+  their cells carry `open = true` (both cells of an unconsumed ingredient). No
+  cell is `final`.
+- A draft (no steps) in partial mode: 2-column layout, every ingredient open.
+- A complete valid tree gives exactly the layout of §6 (nothing open).
+- Structural errors (`MULTIPLE_CONSUMERS`, `UNKNOWN_REFERENCE`, …): draft layout.
 
 ## 7. Diagnostics
 
